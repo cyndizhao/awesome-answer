@@ -15,7 +15,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby 2.4.0
+ruby '2.4.0'
 
 gem 'cowsay', '~> 0.3'
 gem 'colorize', '0.8.1'
