@@ -1,0 +1,13 @@
+<h1>New Questions</h1>
+
+<%# render helps you insert (or render) a partial so Rails expect in here that
+    you've defined a partial within the same folder of this file (new.html.erb)
+    called `_form.html.erb` so the file path should be:
+    `/app/view/questions/_form.html.erb`. Note that partials will have access to
+    instance variables so there is no need pass them explicitly.
+    If you want to pass a local variable then you will need to do so explicilty
+    as in:  render 'form', my_var: 'abc'
+    Also, if the partial is in another folder (such as contact) then you will
+    have to put the full path for the partial as in: render '/contact/form'!!!!!!(do not need "_")
+     %>
+<%= render 'form' %>
