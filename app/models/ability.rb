@@ -10,7 +10,7 @@ class Ability
   # if the user is not logged in which means `user` comes as `nil` then `user`
   # will be assigned to `User.new` this is useful so we don't have to check
   # if `user` is `nil` all the time
-    user ||=user.new
+    user ||= User.new
 
     if user.is_admin?
       # this gives the admin user super powers by enabling them to perform any
