@@ -23,6 +23,14 @@ class Ability
     can [:edit, :destroy], Question do |question|
       question.user == user
     end
+
+    # define abilities to prevent users from liking their own questions
+    can :like, Question do |q|
+      user != q.user
+    end
+    cannot :like, Question do |q|
+      user == q.user
+    end
     # OR
     # `user_id` is inside the `questions` table and `user` is eithe the signed
     # in user (if the user is signed in) or `User.new` as per line 14

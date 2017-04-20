@@ -31,6 +31,7 @@
     |
     <% if user_signed_in? %>
       Hello, <%= current_user.first_name %>
+      <%= link_to 'Liked Questions', user_likes_path(current_user) %>
       <%# current_user = User.find_by_id session[:user_id] %>
       |
       <%= link_to 'Sign Out', sessions_path, method: :delete %>

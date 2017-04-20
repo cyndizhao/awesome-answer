@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, :via => [:get, :post]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # When we receive a `GET` request with URL `/about`, then Rails will invoke
@@ -23,12 +24,16 @@ Rails.application.routes.draw do
 
   resources :questions do
     resources :answers, only: [:create, :destroy]
-
+    resources :likes, only: [:create, :destroy]
     #Nesting resources :answers, only[:create, :destroy] in resources :questions will create the following routes
     # question_answers POST   /questions/:question_id/answers(.:format)     answers#create
     # question_answer DELETE /questions/:question_id/answers/:id(.:format) answers#destroy
   end
-  resources :users, only: [:new, :create]
+
+  resources :users, only: [:new, :create] do
+    resources :likes, only: [:index]
+  end
+
   resources :sessions, only: [:new, :create] do
     # when you define a route with `on: :collection` option, it skips having an
     # `:id` or `:session_id` as part of the generated URL

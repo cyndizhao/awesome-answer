@@ -27,6 +27,7 @@ class QuestionsController < ApplicationController
     @question.user = current_user
     #question_params is a function, we use the result it returns here
     if @question.save
+      RemindQuestionOwnerJob.set(wait: 5.days).perform_later(q.id)
       # Rails gives us access to `flash` object which looks like a Hash. flash
       # utilizes cookies to store a bit of information that we can access in the
       # next request. Flash will automatically be deleted when it's displayed.

@@ -10,6 +10,9 @@ class Question < ApplicationRecord
   #                     call `question.destroy`
   #!!!!!!!!REMEBER always add dependent!!!!!!
   has_many :answers, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :likers, through: :likes, source: :user
+
   belongs_to :user, optional:true
   #belongs_to :subject will enforce validation that the association must be present by default
   #to make it optional, give belongs_to a second argument 'optional: true'
@@ -63,6 +66,13 @@ class Question < ApplicationRecord
     order(created_at: :desc).limit(number)
   end
 
+  def liked_for(user)
+    likes.find_by(user: user)
+  end
+
+  def like_by?(user)
+    likes.exists?(user: user)
+  end
 
   private
 

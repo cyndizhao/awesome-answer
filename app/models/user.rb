@@ -20,6 +20,10 @@ class User < ApplicationRecord
   # 4. We will get a method called `authenticate` that will help us test if the
   #    user has entered the correct password or not.
   has_many :questions, dependent: :nullify
+  has_many :likes, dependent: :destroy
+  has_many :liked_questions, through: :likes, source: :question
+  #'through: :likes', likes refers to the relationship 'has_many :likes', not the table likes
+
   has_secure_password
 
   validates :first_name, presence: true
