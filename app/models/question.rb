@@ -11,7 +11,11 @@ class Question < ApplicationRecord
   #!!!!!!!!REMEBER always add dependent!!!!!!
   has_many :answers, dependent: :destroy
   has_many :likes, dependent: :destroy
-  has_many :likers, through: :likes, source: :user
+  has_many :votes, dependent: :destroy
+  has_many :voters, through: :votes, source: :user
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
+
 
   belongs_to :user, optional:true
   #belongs_to :subject will enforce validation that the association must be present by default
@@ -66,12 +70,17 @@ class Question < ApplicationRecord
     order(created_at: :desc).limit(number)
   end
 
-  def liked_for(user)
+  def like_for(user)
     likes.find_by(user: user)
   end
 
-  def like_by?(user)
+  def liked_by?(user)
     likes.exists?(user: user)
+  end
+
+  def votes_count
+    # TODO: attempt to do it in a single query
+    votes.where(is_up: true).count - votes.where(is_up: false).count
   end
 
   private

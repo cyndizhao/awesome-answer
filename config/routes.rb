@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :questions do
     resources :answers, only: [:create, :destroy]
     resources :likes, only: [:create, :destroy]
+    resources :votes, only: [:create, :destroy, :update]
     #Nesting resources :answers, only[:create, :destroy] in resources :questions will create the following routes
     # question_answers POST   /questions/:question_id/answers(.:format)     answers#create
     # question_answer DELETE /questions/:question_id/answers/:id(.:format) answers#destroy

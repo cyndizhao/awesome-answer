@@ -6,6 +6,11 @@
 <p><strong>Subject: </strong><%= @question.subject.name if @question.subject %></p>
 <!-- <p><strong>Subject: </strong><%= @question.subject&.name %></p> -->
 
+<!-- <p>Tags: <%# @question.tags.map(&:name).join(', ') %></p> -->
+<p>Tags: <%= @question.tags.map.pluck(:name).join(', ') %></p>
+
+
+
 <%# like = @question.likes.find_by(user: current_user) %>
 <!-- do not need the above line since we have the method "like_for" in question.rb -->
 <% if user_signed_in? && (can? :like, @question)%>
@@ -23,6 +28,27 @@
 
 
 
+
+<% user_vote = @question.votes.find_by_user_id current_user %>
+<% if user_vote.nil? %>
+  <%= link_to fa_icon('thumbs-o-up'), question_votes_path(@question, {is_up: true}), method: :post%>
+  <%= link_to fa_icon('thumbs-o-down'), question_votes_path(@question, {is_up: false}), method: :post %>
+<% elsif user_vote.is_up?%>
+  <%= link_to fa_icon('thumbs-up'), question_vote_path(@question, user_vote), method: :delete %>
+  <%= link_to fa_icon('thumbs-o-down'), question_vote_path(@question, user_vote, {is_up: false}), method: :patch %>
+  <!-- voted up -->
+<% else %>
+<%= link_to fa_icon('thumbs-down'), question_vote_path(@question, user_vote), method: :delete %>
+<%= link_to fa_icon('thumbs-o-up'), question_vote_path(@question, user_vote, {is_up: true}), method: :patch %>
+<% end %>
+
+<%= @question.votes_count %>
+
+
+
+
+
+
 <% if can? :edit, @question%>
   <%= link_to 'Edit', edit_question_path(@question) %>
 <% end %>
@@ -31,6 +57,9 @@
 <% if can? :destroy, @question%>
   <%= link_to 'Delete', question_path(@question), method: :delete, data:{confirm: 'Are you sure?'} %>
 <% end %>
+
+
+
 
 
 <h2>Answers</h2>

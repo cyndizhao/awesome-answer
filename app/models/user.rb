@@ -22,6 +22,9 @@ class User < ApplicationRecord
   has_many :questions, dependent: :nullify
   has_many :likes, dependent: :destroy
   has_many :liked_questions, through: :likes, source: :question
+
+  has_many :votes, dependent: :destroy
+  has_many :voted_questions, through: :votes, source: :question
   #'through: :likes', likes refers to the relationship 'has_many :likes', not the table likes
 
   has_secure_password

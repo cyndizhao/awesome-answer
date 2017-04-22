@@ -53,6 +53,8 @@ gem "font-awesome-rails"
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'sinatra', '2.0.0.rc2'
+gem 'chosen-rails'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

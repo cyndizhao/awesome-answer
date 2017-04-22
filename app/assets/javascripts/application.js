@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require chosen-jquery
+//= require bootstrap-sprockets
 //= require_tree .
 
 
@@ -31,3 +33,6 @@
 
 // note that the url for the compiled (or individual) files will be:
 // /assets/FILE_NAME !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+$(document).ready(function(){
+  $('.chosen-select').chosen()
+})

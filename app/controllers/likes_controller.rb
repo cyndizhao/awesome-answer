@@ -6,7 +6,8 @@ class LikesController < ApplicationController
     @questions = user.liked_questions
 
     render 'questions/index'
-    #????????????????????????
+    #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!html using "@questions here, not @question in questions_controller index action!!!!!!!!!!"
+    #Thus, we only list the questions that have been favourited by current user
   end
 
   def create
