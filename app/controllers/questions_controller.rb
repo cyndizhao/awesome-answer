@@ -72,6 +72,16 @@ class QuestionsController < ApplicationController
   def show
     # @question = Question.find params[:id]  define in before_action :find_question
     @answer = Answer.new
+    # `respond_to` method allows us to render different outcomes depending on
+    # the format of the requests. Remeber that the default format for any
+    # request in Rails applications is HTML.
+    respond_to do |format|
+      # this ð emans that if the format of the request is HTML then we will
+      # render the `show` template (questions/show.html.erb)
+      format.html  { render :show }
+      #this will render 'json' if the format of the request is JSON
+      format.json  { render json: @question }
+    end
   end
 
   def index

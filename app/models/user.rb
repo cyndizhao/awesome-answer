@@ -39,8 +39,19 @@ class User < ApplicationRecord
 
   before_validation :downcase_email
 
+  before_create :generate_api_token
+
   private
   def downcase_email
     self.email.downcase! if email.present?
   end
+
+  def generate_api_token
+    loop do
+      self.api_token = SecureRandom.urlsafe_base64(32)
+      break unless User.exists?(api_token: self.api_token)
+    end
+  end
+
+
 end

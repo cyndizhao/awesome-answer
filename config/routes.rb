@@ -22,6 +22,15 @@ Rails.application.routes.draw do
   #this will make the home page of the application go to WelcomeController with index action
   root 'welcome#index'
 
+
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      #/api/v1/questions.json
+      #/api/v1/questions/1.json
+      resources :questions, only: [:index, :show]
+    end
+  end
+
   resources :questions do
     resources :answers, only: [:create, :destroy]
     resources :likes, only: [:create, :destroy]
@@ -40,8 +49,6 @@ Rails.application.routes.draw do
     # `:id` or `:session_id` as part of the generated URL
     delete :destroy, on: :collection
   end
-
-
   # get('/questions/new', { to: 'questions#new', as: 'new_question' })
   # #can not have space between 'get' and '('
   # post('/questions', {to: 'questions#create', as:'questions'})
