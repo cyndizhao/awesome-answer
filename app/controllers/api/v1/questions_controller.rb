@@ -1,8 +1,6 @@
-class Api::V1::QuestionsController < ApplicationController
-  before_action :authenticate_user
-
+class Api::V1::QuestionsController < Api::BaseController
   def index
-    @questions = Question.last(20)
+    @questions = Question.order(created_at: :DESC)
     # render json: @questions
   end
 
@@ -13,15 +11,21 @@ class Api::V1::QuestionsController < ApplicationController
     # if the format is JSON and we're using jbuilder as our templating system
     # what file will be rendered?
     # /views/api/v1/questions/show.json.jbuilder
-    render json: @question
+
+    #using "render json: @question" will use Serializer for the quesiton model
+    #using "render :show " or no render will use the corresponding view for the specific format
   end
 
-  private
-  def authenticate_user
-    @user = User.find_by_api_token params[:api_token]
-    # head will send an empty HTTP response with a code that is inferred by the
-    # symbol you pass as an argument to the `head` method
-    head :unauthorized if @user.blank?
+  def create
+    question_params = params.require(:question).permit(:title, :body)
+    question = Question.new question_params
+    question.user = @user
+
+    if  question.save
+      head :ok
+    else
+      render json: {error: question.errors.full_messages.join(', ')}
+    end
   end
 
 end

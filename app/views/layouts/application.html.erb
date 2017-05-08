@@ -42,11 +42,14 @@
     <% end %>
 
     <hr>
+    <div class="container">
       <% if flash[:notice] %>
         <div class="flash-notice"><%= flash[:notice] %></div>
       <% elsif flash[:alert] %>
         <div class="flash-alert"><%= flash.now[:alert] %></div>
       <% end %>
+    </div>
+
       <%#= notice || alert %>
     <hr>
     <%= yield %>

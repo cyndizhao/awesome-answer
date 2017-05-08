@@ -41,7 +41,9 @@ class Question < ApplicationRecord
   # answers.create!(attributes = {})
   # http://guides.rubyonrails.org/association_basics.html#has-many-association-reference
 
-
+  extend FriendlyId
+  friendly_id :title, use: [:slugged, :history, :finders]
+  mount_uploader :image, ImageUploader
   # validates :title, presence: true
   # validates(:title, { presence: true, uniqueness: true })
   validates(:title, { presence: { message: 'must be present!' }, uniqueness: true })
@@ -82,6 +84,12 @@ class Question < ApplicationRecord
     # TODO: attempt to do it in a single query
     votes.where(is_up: true).count - votes.where(is_up: false).count
   end
+
+  # Rails uses `to_param` method in ActiveRecord to know what to use for the
+  # URL, by default `to_param` methods will return the `id`
+  # def to_param
+  #   "#{id}-#{title}".parameterize
+  # end
 
   private
 

@@ -22,5 +22,14 @@ module AwesomeAnswers
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
     config.active_job.queue_adapter = :delayed_job
+
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*' #specifies which domains can do cors request to our rails sever
+        # "*" means all domains
+        resource '*', :headers => :any, :methods => [:get, :post, :options, :delete, :put, :patch]
+      end
+    end
+
   end
 end

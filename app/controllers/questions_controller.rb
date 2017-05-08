@@ -102,7 +102,7 @@ class QuestionsController < ApplicationController
       redirect_to root_path, alert:'access denied'
     # @question = Question.find params[:id]
     # question_params = params.require(:question).permit([:title, :body])
-    elsif @question.update(question_params)
+  elsif @question.update(question_params.merge({ slug: nil }))
       #question_params is a function, we call it here and use the result it returns
       redirect_to question_path(@question), notice: 'Question Updated'
       #
@@ -132,7 +132,7 @@ class QuestionsController < ApplicationController
   # the line below is what's called "Strong Parameters" feautre that was added
   # to Rails starting with version 4 to help developer be more explicit about
   # the parameters that they want to allow the user to submit
-  params.require(:question).permit([:title, :body, { tag_ids:[] }])
+  params.require(:question).permit([:title, :body, { tag_ids:[] }, :image])
 
 
   #@question_params = params.require(:question).permit([:title, :body])

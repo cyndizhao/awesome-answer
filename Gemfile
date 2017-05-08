@@ -56,6 +56,11 @@ gem 'delayed_job_active_record'
 gem 'delayed_job_web'
 gem 'sinatra', '2.0.0.rc2'
 gem 'chosen-rails'
+gem 'rack-cors'
+gem 'simple_form'
+gem 'friendly_id'
+gem 'carrierwave'
+gem 'mini_magick'
 
 
 group :development, :test do

@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       #/api/v1/questions.json
       #/api/v1/questions/1.json
-      resources :questions, only: [:index, :show]
+      resources :questions, only: [:index, :show, :create]
     end
   end
 
