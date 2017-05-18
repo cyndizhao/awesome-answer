@@ -11,32 +11,42 @@ class LikesController < ApplicationController
   end
 
   def create
-    question = Question.find(params[:question_id])
-    if cannot? :like, question
-      redirect_to question_path(question), alert: 'liking your own question is disgusting'
+    @question = Question.find(params[:question_id])
+    if cannot? :like, @question
+      redirect_to question_path(@question), alert: 'liking your own question is disgusting'
       return
     end
 
 
-    like = Like.new(user: current_user, question: question)
-    if like.save
-      redirect_to question_path(question), notice: 'Question liked'
-    else
-      redirect_to question_path(question), alert: like.errors.full_messages.join(', ')
+    like = Like.new(user: current_user, question: @question)
+
+    respond_to do |format|
+      if like.save
+        format.html {redirect_to question_path(@question), notice: 'Question liked'}
+        format.js {render :render_like}
+      else
+        format.html {redirect_to question_path(@question), alert: like.errors.full_messages.join(', ')}
+        format.js {render :render_like}
+      end
     end
   end
 
   def destroy
     like = Like.find(params[:id])
-    if cannot? :like, like.question
-      redirect_to question_path(like.question), alert: 'Can not Unliking your own question'
+    @question = Question.find(params[:question_id])
+    if cannot? :like, @question
+      redirect_to question_path(@question), alert: 'Can not Unliking your own question'
       return
     end
 
-    if like.destroy
-      redirect_to question_path(like.question), notice:'Un-liked question!'
-    else
-      redirect_to question_path(like.question), alert: like.errors.full_messages.join(', ')
+    respond_to do |format|
+      if like.destroy
+        format.html {redirect_to question_path(@question), notice:'Un-liked question!'}
+        format.js {render :render_like}
+      else
+        format.html {redirect_to question_path(@question), alert: like.errors.full_messages.join(', ')}
+        format.js {render :render_like}
+      end
     end
   end
 end

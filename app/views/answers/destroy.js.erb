@@ -1,0 +1,4 @@
+// $('#<%= dom_id(@answer) %>').fadeOut();
+$('#<%= dom_id(@answer) %>').fadeOut(400, function() { $(this).remove() });
+
+// alert('hey')

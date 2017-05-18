@@ -27,6 +27,9 @@ class QuestionsController < ApplicationController
     @question.user = current_user
     #question_params is a function, we use the result it returns here
     if @question.save
+      if @question.tweet_this
+        client.update @question.title
+      end
       RemindQuestionOwnerJob.set(wait: 5.days).perform_later(@question.id)
       # Rails gives us access to `flash` object which looks like a Hash. flash
       # utilizes cookies to store a bit of information that we can access in the
@@ -132,11 +135,20 @@ class QuestionsController < ApplicationController
   # the line below is what's called "Strong Parameters" feautre that was added
   # to Rails starting with version 4 to help developer be more explicit about
   # the parameters that they want to allow the user to submit
-  params.require(:question).permit([:title, :body, { tag_ids:[] }, :image])
+  params.require(:question).permit([:title, :body, { tag_ids:[] }, :image, :tweet_this])
 
 
   #@question_params = params.require(:question).permit([:title, :body])
   #above works when you use before_action, but we try to reduce the amount of instance/variables
+  end
+
+  def client
+    ::Twitter::REST::Client.new do |config|
+      config.consumer_key        = ENV['TWITTER_API_KEY']
+      config.consumer_secret     = ENV['TWITTER_SECRET_KEY']
+      config.access_token        = current_user.oauth_token
+      config.access_token_secret = current_user.oauth_secret
+    end
   end
 
 end

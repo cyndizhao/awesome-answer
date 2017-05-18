@@ -11,23 +11,7 @@
 <%= image_tag @question.image.url(:medium) if @question.image.present?%>
 <br>
 
-
-<%# like = @question.likes.find_by(user: current_user) %>
-<!-- do not need the above line since we have the method "like_for" in question.rb -->
-<% if user_signed_in? && (can? :like, @question)%>
-  <%# if !like.present? %>
-  <% if !@question.liked_by?(current_user) %>
-    <%= link_to fa_icon("heart-o"), question_likes_path(@question), method: :post%>
-  <% else %>
-    <%# link_to "Unlike", question_like_path(@question, like), method: :delete%>
-    <%= link_to fa_icon("heart"), question_like_path(@question, @question.like_for(current_user)), method: :delete%>
-  <% end %>
-<% end %>
-
-<span><%= pluralize(@question.likes.count, 'like') %></span>
-
-
-
+<%= render '/likes/like' %>
 
 
 <% user_vote = @question.votes.find_by_user_id current_user %>
@@ -65,15 +49,18 @@
 
 <h2>Answers</h2>
 <%# question/:question_id/answers %>
-<%= @answer.errors.full_messages.join(', ') %>
-<%= form_for [@question, @answer] do |f| %>
-  <%= f.text_area :body %>
-  <%= f.submit %>
-<% end %>
+<%= render '/answers/form' %>
+
+<hr />
+
+<%# form_for [@question, @answer] do |f| %>
+  <%# f.text_area :body %>
+  <%# f.submit %>
+<%# end %>
 
 <hr>
-<% @question.answers.each do |answer| %>
-  <p><%= answer.body %></p>
-  <%= link_to 'Delete Answer', question_answer_path(@question, answer), method: :delete, data:{confirm: "Are your sure?"} %>
-  <hr>
-<% end %>
+<div id="answers">
+  <% @question.answers.each do |ans| %>
+    <%= render '/answers/answer', answer: ans %>
+  <% end %>
+</div>

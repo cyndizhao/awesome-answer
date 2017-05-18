@@ -60,7 +60,10 @@ gem 'rack-cors'
 gem 'simple_form'
 gem 'friendly_id'
 gem 'carrierwave'
+gem 'fog'
 gem 'mini_magick'
+gem 'omniauth-twitter'
+gem 'twitter'
 
 
 group :development, :test do
@@ -81,6 +84,8 @@ group :development do
   gem 'awesome_print'
   gem 'hirb'
   gem "letter_opener"
+  gem 'pry'
+  gem 'pry-rails'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
